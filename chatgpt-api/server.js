@@ -1,23 +1,21 @@
-// server.js
 require('dotenv').config();
+const cors = require('cors');
 const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const API_URL = "https://api.openai.com/v1/chat/completions";
-const API_KEY = process.env.OPENAI_API_KEY; // Secure API key
+const API_KEY = process.env.OPENAI_API_KEY;
 
-// Middleware
+app.use(cors());
 app.use(bodyParser.json());
 
-// Test endpoint
 app.get('/', (req, res) => {
   res.send('ChatGPT API is running!');
 });
 
-// ChatGPT completion endpoint
 app.post('/chatgpt', async (req, res) => {
   const { prompt } = req.body;
 
