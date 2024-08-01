@@ -1,10 +1,13 @@
 // server.js
+require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+const API_URL = "https://api.openai.com/v1/chat/completions";
+const API_KEY = process.env.OPENAI_API_KEY; // Secure API key
 
 // Middleware
 app.use(bodyParser.json());
@@ -14,13 +17,7 @@ app.get('/', (req, res) => {
   res.send('ChatGPT API is running!');
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
-// server.js
-const API_URL = "https://api.openai.com/v1/chat/completions";
-const API_KEY = "YOUR_API_KEY"; // Replace with your actual OpenAI API key
-
+// ChatGPT completion endpoint
 app.post('/chatgpt', async (req, res) => {
   const { prompt } = req.body;
 
@@ -50,4 +47,8 @@ app.post('/chatgpt', async (req, res) => {
     console.error("Error generating text:", error);
     res.status(500).json({ error: 'Error occurred while generating text' });
   }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
